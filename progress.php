@@ -36,6 +36,11 @@ while ($row = $result->fetch_assoc()) {
     $scores[] = $row['score'];
     $attempts[] = $row['attempts'];
 }
+
+//Fetch Username
+$query_username = "SELECT username FROM users WHERE role = 'User'";
+$result_username = $conn->query($query_username);
+$username = $result_username->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +50,8 @@ while ($row = $result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Progress - Beyond the Session</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         /* Global Styles */
         * {
@@ -53,6 +60,7 @@ while ($row = $result->fetch_assoc()) {
             box-sizing: border-box;
         }
         body {
+            background: url("Background/bg.jpg") no-repeat center/cover fixed;
             font-family: 'Roboto', sans-serif;
             background-color: #f7f8fa;
             color: #333;
@@ -162,11 +170,35 @@ while ($row = $result->fetch_assoc()) {
         }
     </style>
 </head>
-<body>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" style="background: url('Background/bg.jpg') no-repeat center/cover fixed;">
+        <div class="container-fluid">
+            <div class="d-flex flex-column">
+                <span class="badge bg-info text-white px-3 mb-1">WELCOME TO</span>
+                    <h4 class="text-white mb-0 fw-bolder text-uppercase border-bottom border-info pb-1">VR EMOTIONAL WELL-BEING</h4>
+                        <span class="badge bg-light text-primary mt-1">
+                            <?php echo strtoupper($username['username']); ?>
+                            <i class="bi bi-person-check-fill ms-2"></i>
+                        </span>
+                    </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-link fw-bold text-light d-flex align-items-center gap-2 position-relative btn btn-outline-info shadow-sm px-3 py-2"><a href="index.php" class="nav-link fw-bold text-light d-flex align-items-center">Home</a></li>
+                    <li class="nav-link fw-bold text-light d-flex align-items-center gap-2 position-relative btn btn-outline-info shadow-sm px-3 py-2"><a href="progress.php" class="nav-link fw-bold text-light d-flex align-items-center">View Progress</a></li>
+                    <li class="nav-link fw-bold text-light d-flex align-items-center gap-2 position-relative btn btn-outline-info shadow-sm px-3 py-2"><a href="VR/index.php" class="nav-link fw-bold text-light d-flex align-items-center">Start VR</a></li>
+                    <li class="nav-link fw-bold text-light d-flex align-items-center gap-2 position-relative btn btn-outline-info shadow-sm px-3 py-2"><a href="quiz.php" class="nav-link fw-bold text-light d-flex align-items-center">Take Quiz</a></li>
+                    <li class="nav-link fw-bold text-light d-flex align-items-center gap-2 position-relative btn btn-outline-info shadow-sm px-3 py-2"><a href="logout.php" class="nav-link fw-bold text-light d-flex align-items-center">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav><br><br><hr style="color: white; "><br>
 
-<div class="container">
-    <h1>Your Progress</h1>
-    <p>Review your quiz performance below:</p>
+<div class="container content mt-5 pt-4">
+    <h1 class="text-center mt-4">Your Progress</h1>
+    <p class="text-center mt-4">REVIEW YOUR QUIZ PERFORMANCE BELOW</p>
 
     <!-- Progress Table -->
     <table class="progress-table">
@@ -174,7 +206,6 @@ while ($row = $result->fetch_assoc()) {
             <th>Score</th>
             <th>Attempts</th>
             <th>Last Attempt</th>
-            <th>Action</th>
         </tr>
         <?php
         // Display the last progress entry
@@ -184,21 +215,12 @@ while ($row = $result->fetch_assoc()) {
             <tr>
                 <td><?= $row['score'] ?>/10</td>
                 <td><?= $row['attempts'] ?></td>
-                <td><?= date("F j, Y, g:i a", strtotime($row['last_attempt'])) ?></td>
-                <td>
-                    <!-- Delete Button -->
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="delete_progress_id" value="<?= $row['id'] ?>">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this progress record?')">Delete</button>
-                    </form>
-                </td>
+                <td><?= date("j F Y, g:i A", strtotime($row['last_attempt'])) ?></td>
             </tr>
         <?php endwhile; ?>
     </table>
 
-    <a href="index.php" class="btn btn-dashboard">Back to Dashboard</a>
-    <a href="quiz.php" class="btn">Retake Quiz</a>
-    <a href="logout.php" class="btn btn-logout">Logout</a>
+    <a href="quiz.php" class="btn btn-dashboard">Retake Quiz</a>
 </div>
 
 <!-- Chart Section -->

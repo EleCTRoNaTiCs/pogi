@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2025 at 11:07 AM
+-- Generation Time: Feb 19, 2025 at 05:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,15 +63,17 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Role` enum('Admin','User') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
-(1, 'Jelmar', '$2y$10$1gXoC2LfI4000rvZtDHtkeFaQfO7UkCDAKr56N2VNCUhLHZ809c5O', '2025-01-30 11:27:06');
+INSERT INTO `users` (`id`, `username`, `password`, `created_at`, `Role`) VALUES
+(1, 'Jelmar', '$2y$10$1gXoC2LfI4000rvZtDHtkeFaQfO7UkCDAKr56N2VNCUhLHZ809c5O', '2025-01-30 11:27:06', 'User'),
+(2, 'admin', '$2y$10$JQ99uJH4e5y3lYFRw3iduOFpzHceP1Vsa.dDeDP8IKcDLkkuUMJY6', '2025-02-12 21:40:25', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -92,15 +94,8 @@ CREATE TABLE `user_progress` (
 --
 
 INSERT INTO `user_progress` (`id`, `user_id`, `score`, `attempts`, `last_attempt`) VALUES
-(5, 1, 2, 1, '2025-01-30 11:34:49'),
-(6, 1, 2, 1, '2025-01-30 11:37:17'),
-(7, 1, 3, 1, '2025-01-30 11:39:40'),
-(8, 1, 4, 1, '2025-01-30 11:47:46'),
-(9, 1, 5, 1, '2025-01-30 12:17:10'),
-(10, 1, 1, 1, '2025-01-30 12:17:33'),
-(11, 1, 1, 1, '2025-01-30 13:21:51'),
-(12, 1, 1, 1, '2025-01-30 14:34:29'),
-(13, 1, 0, 1, '2025-01-30 14:50:21');
+(50, 1, 6, 1, '2025-02-19 14:14:29'),
+(84, 1, 10, 1, '2025-02-19 15:57:32');
 
 --
 -- Indexes for dumped tables
@@ -140,13 +135,13 @@ ALTER TABLE `quiz_questions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `user_progress`
 --
 ALTER TABLE `user_progress`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- Constraints for dumped tables
